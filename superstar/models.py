@@ -27,7 +27,7 @@ class Employee(models.Model):
     name=models.CharField(max_length=50)
     mobile=models.CharField(max_length=10)
     address=models.CharField(max_length=50)
-    city=models.ForeignKey(State, on_delete=models.RESTRICT, null=True)
+    city=models.ForeignKey(City, on_delete=models.RESTRICT, null=True)
     class Meta:
         verbose_name_plural="employees"
     def __str__(self):
