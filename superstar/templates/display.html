@@ -13,5 +13,14 @@
     <!-- {{ country.name }} -->
     <!-- {{ country.population }}
     {{ country.continent }} -->
+    {% if user.is_authenticated %}
+        <p>Hi, {{ user.username }}!</p>  <!-- Display the logged-in user's username -->
+    {% else %}
+        <p>Hello, Guest!</p>
+    {% endif %}
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>

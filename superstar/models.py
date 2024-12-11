@@ -38,3 +38,9 @@ class Country(models.Model):
     def __str__(self):
         return self.name
     
+class EmpID(models.Model):
+    EMP_ID=models.CharField(max_length=10,unique=True)
+    employee=models.OneToOneField(Employee,on_delete=models.RESTRICT)
+
+    def __str__(self):
+        return self.EMP_ID

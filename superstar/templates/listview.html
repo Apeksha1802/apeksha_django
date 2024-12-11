@@ -18,14 +18,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for emp in employees %}
+            {% for emp in employee %}
             <tr>
-                <td>{{ emp.id }}</td>
-                <td>{{ emp.name }}</td>
-                <td>{{ emp.mobile }}</td>
-                <td>{{ emp.address}}</td>
-                <td>{{ emp.city }}</td>
-                <td>{{ emp.state }}</td>
+                <td>{{ emp_id }}</td>
+                <td>{{ emp_name }}</td>
+                <td>{{ emp_mobile }}</td>
+                <td>{{ emp_address }}</td>
+                <td>{{ emp_city }}</td>
+                <td>{{ emp_state }}</td>
             </tr>
             {% endfor %}
         </tbody>

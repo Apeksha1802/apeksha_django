@@ -1,5 +1,5 @@
 from django.contrib import admin
-from superstar.models import City, Country, State, Employee
+from superstar.models import City, Country, State, Employee, EmpID
 #from django.db.migrations.recorder import MigrationRecorder
 # Register your models here.
 
@@ -22,10 +22,14 @@ class CityAdmin(admin.ModelAdmin):
 admin.site.register(City,CityAdmin)
 #admin.site.register(Country)
 
+admin.site.register(EmpID)
+
 class CountryAdmin(admin.ModelAdmin):
     list_display=("id","name","population","continent")
     search_fields=['name','continent']
 admin.site.register(Country,CountryAdmin)
+
+
 
 # class StateAdmin(admin.ModelAdmin):
 #     list_display=("id","name","population","capital")
