@@ -1,8 +1,6 @@
 from django.db import models
 
 # Create your models here.
-
-
 class State(models.Model):
     name=models.CharField(max_length=50)
     # population=models.IntegerField()
@@ -11,8 +9,6 @@ class State(models.Model):
         verbose_name_plural="states"
     def __str__(self):
         return self.name
-
-
 
 class City(models.Model):
     name=models.CharField(max_length=20)
@@ -27,7 +23,7 @@ class Employee(models.Model):
     name=models.CharField(max_length=50)
     mobile=models.CharField(max_length=10)
     address=models.CharField(max_length=50)
-    city=models.ForeignKey(State, on_delete=models.RESTRICT, null=True)
+    city=models.ForeignKey(City, on_delete=models.RESTRICT, null=True)
     class Meta:
         verbose_name_plural="employees"
     def __str__(self):
