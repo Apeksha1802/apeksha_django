@@ -128,3 +128,6 @@ LOGIN_REDIRECT_URL = '/display'  # Or the page you want to redirect to after log
 LOGOUT_REDIRECT_URL = '/addition'  # Or the page you want to redirect to after logout
 
 LOGIN_URL = '/login/'  # Redirect unauthenticated users to the login page
+
+SESSION_ENGINE='django.contrib.sessions.backends.db'
+SESSION_COOKIE_NAME='sessionid'

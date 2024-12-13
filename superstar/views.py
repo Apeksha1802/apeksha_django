@@ -7,6 +7,22 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User 
+
+from rest_framework.decorators import api_view
+
+from rest_framework.response import Response
+
+from rest_framework import status
+
+from .models import State
+
+from superstar.serializers import StateSerializer
+
+from django.http import JsonResponse
+
+from rest_framework.decorators import api_view
 
 # Create your views here.
 def display(request):
@@ -109,4 +125,52 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
+def logged_in_users(request):
+    sessions=Session.objects.filter(expire_date__gte=datetime.now())
+    user_ids=[]
+    for session in sessions:
+        data=session.get_decoded()
+        if '_auth_user_id' in data:
+            user_ids.append(data['_auth_user_id'])
+    users=User.objects.filter(id__in=user_ids)
+    return render(request,'logged_in_users.html',{'users':users})
+
+@api_view(['GET', 'POST'])
+def state_list_create_view(request):
+    if request.method == 'GET':
+        states = State.objects.all()
+        serializer = StateSerializer(states, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        serializer = StateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def calculator_view(request):
+  try:
+    num1 = float(request.data.get('num1'))
+    num2 = float(request.data.get('num2'))
+    operation_type = request.data.get('type', '').lower()
+    if operation_type == 'add':
+      result = num1 + num2
+    elif operation_type == 'sub':
+      result = num1 - num2
+    elif operation_type == 'mul':
+      result = num1 * num2
+    elif operation_type == 'div':
+      if num2 == 0:
+        return JsonResponse({"error": "Division by zero is not allowed"}, status=400)
+      result = num1 / num2
+    else:
+      return JsonResponse({"error": "Invalid operation type. Use 'add', 'sub', 'mul', or 'div'."}, status=400)
+    return JsonResponse({"result": result}, status=200)
+  
+  except ValueError:
+    return JsonResponse({"error": "Invalid input. Please provide numbers for 'num1' and 'num2'."}, status=400)
+
+  except Exception as e:
+    return JsonResponse({"error": str(e)}, status=400)
 
